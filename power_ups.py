@@ -4,297 +4,217 @@ import time
 
 class PowerUp:
     """
-    Base class for all power-ups. Defines the core attributes and methods.
+    Represents a power-up in the Bloom Burst game.
     """
-    def __init__(self, name, description, duration):
+
+    def __init__(self, name, description, duration, effect_function):
         """
-        Initializes a new power-up instance.
+        Initializes a new PowerUp instance.
 
         Args:
-            name (str): The name of the power-up.
+            name (str): The name of the power-up (e.g., "Bloom Boost").
             description (str): A brief description of what the power-up does.
             duration (int): The duration of the power-up's effect in seconds.
+            effect_function (callable): A function that is called when the power-up is activated.
+                                       It should take the game state as input.
         """
         self.name = name
         self.description = description
         self.duration = duration
-        self.start_time = None
+        self.effect_function = effect_function
         self.is_active = False
+        self.start_time = None
 
-    def activate(self, player):
+    def activate(self, game_state):
         """
-        Activates the power-up, applying its effects.  Must be overridden by subclasses.
-        Should also set self.is_active to True and self.start_time to the current time.
+        Activates the power-up, applying its effect and setting the active flag.
 
         Args:
-            player: The player object to apply the power-up's effects to.
-
-        Raises:
-            NotImplementedError: If the method is not overridden in a subclass.
-        """
-        raise NotImplementedError("activate() method must be implemented in a subclass")
-
-    def deactivate(self, player):
-        """
-        Deactivates the power-up, removing its effects.  Must be overridden by subclasses.
-        Should also set self.is_active to False.
-
-        Args:
-            player: The player object to remove the power-up's effects from.
-
-        Raises:
-            NotImplementedError: If the method is not overridden in a subclass.
-        """
-        raise NotImplementedError("deactivate() method must be implemented in a subclass")
-
-    def is_expired(self):
-        """
-        Checks if the power-up has expired.
-
-        Returns:
-            bool: True if the power-up's duration has passed, False otherwise.
+            game_state: The current state of the game (e.g., a dictionary containing game data).
         """
         if not self.is_active:
-            return True  # Consider inactive power-ups as expired
-        return time.time() - self.start_time > self.duration
+            self.is_active = True
+            self.start_time = time.time()
+            self.effect_function(game_state)  # Apply the power-up's effect
+            print(f"{self.name} activated! {self.description}")  # Provide feedback to the user
+        else:
+            print(f"{self.name} is already active.")
+
+    def deactivate(self, game_state):
+        """
+        Deactivates the power-up, reverting its effect.  Override in subclass if needed.
+
+        Args:
+            game_state: The current state of the game.
+        """
+        self.is_active = False
+        self.start_time = None
+        print(f"{self.name} deactivated.")
+
+    def update(self, game_state):
+        """
+        Updates the power-up state, checking if it has expired.
+
+        Args:
+            game_state: The current state of the game.
+
+        Returns:
+            bool: True if the power-up has expired and needs deactivation, False otherwise.
+        """
+        if self.is_active:
+            elapsed_time = time.time() - self.start_time
+            if elapsed_time >= self.duration:
+                self.deactivate(game_state)
+                return True  # Signal that the power-up has expired
+        return False
 
     def __str__(self):
         return f"{self.name}: {self.description} (Duration: {self.duration} seconds)"
 
 
-class BloomBoost(PowerUp):
+def grant_extra_time(game_state):
     """
-    A power-up that temporarily increases the bloom potential of flowers.
+    A power-up effect function that grants extra time.
+
+    Args:
+        game_state (dict): The game state dictionary.  Must contain a 'time_remaining' key.
     """
-    def __init__(self):
-        super().__init__("Bloom Boost", "Temporarily increases bloom potential by 25%.", 10)
-        self.bloom_boost_percentage = 0.25  # 25% boost
-
-    def activate(self, player):
-        """
-        Activates the bloom boost, increasing the player's bloom potential modifier.
-
-        Args:
-            player: The player object.
-        """
-        if self.is_active:
-            print("Bloom Boost is already active!")
-            return
-        
-        print("Activating Bloom Boost!")
-        player.bloom_potential_modifier += self.bloom_boost_percentage
-        self.is_active = True
-        self.start_time = time.time()
-
-    def deactivate(self, player):
-        """
-        Deactivates the bloom boost, restoring the player's bloom potential modifier.
-
-        Args:
-            player: The player object.
-        """
-        if not self.is_active:
-            print("Bloom Boost is not active!")
-            return
-            
-        print("Deactivating Bloom Boost!")
-        player.bloom_potential_modifier -= self.bloom_boost_percentage
-        self.is_active = False
+    if 'time_remaining' in game_state:
+        extra_time = 10  # Seconds to add
+        game_state['time_remaining'] += extra_time
+        print(f"Added {extra_time} seconds! Time remaining: {game_state['time_remaining']}")
+    else:
+        print("Error: Time remaining not found in game state.")
 
 
-class ColorHarmony(PowerUp):
+def double_score(game_state):
     """
-    A power-up that temporarily increases score for matching flower colors.
+    A power-up effect function that doubles the player's score.
+
+    Args:
+        game_state (dict): The game state dictionary.  Must contain a 'score_multiplier' key.
     """
-    def __init__(self):
-        super().__init__("Color Harmony", "Temporarily increases score for matching flower colors by 50%.", 15)
-        self.color_harmony_bonus = 0.50  # 50% bonus
+    if 'score_multiplier' in game_state:
+        game_state['score_multiplier'] *= 2
+        print(f"Score multiplier doubled! Current multiplier: {game_state['score_multiplier']}")
+    else:
+        print("Error: Score multiplier not found in game state.")
 
-    def activate(self, player):
-        """
-        Activates the color harmony bonus.
 
-        Args:
-            player: The player object.
-        """
-        if self.is_active:
-            print("Color Harmony is already active!")
-            return
-        
-        print("Activating Color Harmony!")
-        player.color_matching_bonus += self.color_harmony_bonus
-        self.is_active = True
-        self.start_time = time.time()
-
-    def deactivate(self, player):
-        """
-        Deactivates the color harmony bonus.
-
-        Args:
-            player: The player object.
-        """
-        if not self.is_active:
-            print("Color Harmony is not active!")
-            return
-
-        print("Deactivating Color Harmony!")
-        player.color_matching_bonus -= self.color_harmony_bonus
-        self.is_active = False
-
-class SymmetrySurge(PowerUp):
+def clear_board(game_state):
     """
-    A power-up that temporarily grants bonus points for arrangement symmetry.
+    A power-up effect function that clears the board. Assumes a 'board' key in game_state.
+
+    Args:
+        game_state (dict): The game state dictionary.
     """
-    def __init__(self):
-        super().__init__("Symmetry Surge", "Temporarily grants bonus points for arrangement symmetry.", 20)
-        self.symmetry_bonus = 100  # Flat bonus for symmetrical arrangements
+    if 'board' in game_state:
+        rows = len(game_state['board'])
+        cols = len(game_state['board'][0]) if rows > 0 else 0 # handle empty boards
+        game_state['board'] = [[' ' for _ in range(cols)] for _ in range(rows)]  # Clear the board
+        print("Board cleared!")
+    else:
+        print("Error: Game board not found in game state.")
 
-    def activate(self, player):
-        """
-        Activates the symmetry surge.
-
-        Args:
-            player: The player object.
-        """
-        if self.is_active:
-            print("Symmetry Surge is already active!")
-            return
-            
-        print("Activating Symmetry Surge!")
-        player.symmetry_bonus_active = True
-        self.is_active = True
-        self.start_time = time.time()
-
-    def deactivate(self, player):
-        """
-        Deactivates the symmetry surge.
-
-        Args:
-            player: The player object.
-        """
-        if not self.is_active:
-            print("Symmetry Surge is not active!")
-            return
-
-        print("Deactivating Symmetry Surge!")
-        player.symmetry_bonus_active = False
-        self.is_active = False
 
 class PowerUpManager:
     """
-    Manages power-up collection and usage.
+    Manages the power-ups in the game, including creation, activation, and tracking.
     """
+
     def __init__(self):
         """
-        Initializes the PowerUpManager.
+        Initializes the PowerUpManager with a list of available power-ups.
         """
-        self.power_ups = []  # List to store collected power-ups
+        self.available_power_ups = [
+            PowerUp("Bloom Boost", "Grants extra time", 10, grant_extra_time),
+            PowerUp("Score Surge", "Doubles your score", 5, double_score),
+            PowerUp("Board Blast", "Clears the entire board", 0.1, clear_board),
+        ]
+        self.active_power_ups = []
 
-    def add_power_up(self, power_up):
+    def create_power_up(self, power_up_name):
         """
-        Adds a power-up to the player's inventory.
-
-        Args:
-            power_up (PowerUp): The power-up to add.
-        """
-        self.power_ups.append(power_up)
-        print(f"You collected a {power_up.name}!")
-
-    def use_power_up(self, power_up_name, player):
-        """
-        Uses a power-up from the player's inventory.
+        Creates a new power-up instance based on its name.
 
         Args:
-            power_up_name (str): The name of the power-up to use.
-            player: The player object.
+            power_up_name (str): The name of the power-up to create.
 
         Returns:
-            bool: True if the power-up was used successfully, False otherwise.
+            PowerUp: A new PowerUp instance, or None if the power-up name is invalid.
         """
-        for power_up in self.power_ups:
-            if power_up.name == power_up_name and not power_up.is_active:
-                power_up.activate(player)
-                #self.power_ups.remove(power_up)  # Remove after activation for single use, can comment out for reusable
-                return True
-        print(f"You don't have a {power_up_name} or it is already active.")
+        for power_up in self.available_power_ups:
+            if power_up.name.lower() == power_up_name.lower():
+                return PowerUp(power_up.name, power_up.description, power_up.duration, power_up.effect_function)
+        print(f"Error: Invalid power-up name: {power_up_name}")
+        return None
+
+    def activate_power_up(self, power_up_name, game_state):
+        """
+        Activates a power-up by name.
+
+        Args:
+            power_up_name (str): The name of the power-up to activate.
+            game_state: The current state of the game.
+
+        Returns:
+            bool: True if the power-up was activated successfully, False otherwise.
+        """
+        power_up = self.create_power_up(power_up_name)
+        if power_up:
+            power_up.activate(game_state)
+            self.active_power_ups.append(power_up)
+            return True
         return False
 
-    def check_expired_power_ups(self, player):
-         """
-         Checks for and deactivates expired power-ups.
-
-         Args:
-             player: The player object.
-         """
-         for power_up in list(self.power_ups): # Iterate over a copy to allow modification
-            if power_up.is_active and power_up.is_expired():
-                 power_up.deactivate(player)
-
-    def list_power_ups(self):
+    def update_power_ups(self, game_state):
         """
-        Lists the power-ups in the player's inventory.
+        Updates the state of all active power-ups, deactivating any that have expired.
+
+        Args:
+            game_state: The current state of the game.
         """
-        if not self.power_ups:
-            print("You have no power-ups.")
-            return
+        expired_power_ups = []
+        for power_up in self.active_power_ups:
+            if power_up.update(game_state):
+                expired_power_ups.append(power_up)
 
-        print("Your Power-ups:")
-        for i, power_up in enumerate(self.power_ups):
-            print(f"{i+1}. {power_up}")
+        for power_up in expired_power_ups:
+            self.active_power_ups.remove(power_up)
 
-# Example Usage (Illustrative)
 
-class Player: # Dummy Player class for example
-    def __init__(self, name):
-        self.name = name
-        self.bloom_potential_modifier = 1.0
-        self.color_matching_bonus = 0.0
-        self.symmetry_bonus_active = False
+# Example Usage
+if __name__ == '__main__':
+    # Initialize game state
+    game_state = {
+        'time_remaining': 30,
+        'score_multiplier': 1,
+        'board': [['R', 'G', 'B'], ['Y', 'R', 'G'], ['B', 'Y', 'R']]
+    }
 
-    def calculate_score(self, base_score, color_matches, is_symmetrical):
-        score = base_score * self.bloom_potential_modifier
-        score += color_matches * self.color_matching_bonus
-        if self.symmetry_bonus_active and is_symmetrical:
-            score += 100 # Example symmetry bonus
-        return score
-
-def main():
-    """
-    Illustrates the power-up system in a game loop.
-    """
-    player = Player("Alice")
+    # Initialize power-up manager
     power_up_manager = PowerUpManager()
 
-    # Game loop simulation
-    for i in range(25): # Simulate some game turns
-        print(f"\n--- Turn {i+1} ---")
+    # Player uses a power-up
+    print("\nActivating Bloom Boost...")
+    power_up_manager.activate_power_up("Bloom Boost", game_state)
 
-        # Chance to find a power-up
-        if random.random() < 0.2:  # 20% chance to find a power-up
-            power_up_type = random.choice([BloomBoost, ColorHarmony, SymmetrySurge])
-            power_up_manager.add_power_up(power_up_type())
+    # Simulate game running and updating power-ups
+    print("\nSimulating game running...")
+    for _ in range(12):
+        time.sleep(1)
+        game_state['time_remaining'] -= 1
+        print(f"Time Remaining: {game_state['time_remaining']}")
+        power_up_manager.update_power_ups(game_state)
 
-        # List and use power-ups (example)
-        if power_up_manager.power_ups:
-            power_up_manager.list_power_ups()
-            
-            # Try to use a random power-up
-            power_up_to_use = random.choice(power_up_manager.power_ups)
-            power_up_manager.use_power_up(power_up_to_use.name, player)
-        
-        # Simulate game activity and score calculation
-        base_score = 50
-        color_matches = random.randint(0, 5)
-        is_symmetrical = random.random() < 0.5 # Randomly say it's symmetrical half the time
-        
-        score = player.calculate_score(base_score, color_matches, is_symmetrical)
-        print(f"Score: {score}")
-        
-        # Check and deactivate expired power-ups
-        power_up_manager.check_expired_power_ups(player)
+        #Check score multiplier during the 'Score Surge' power up
+        if _ == 2:
+            print("\nActivating Score Surge...")
+            power_up_manager.activate_power_up("Score Surge", game_state)
+        if _ == 7:
+            print("\nActivating Board Blast...")
+            power_up_manager.activate_power_up("Board Blast", game_state)
+            print(f"Game Board: {game_state['board']}")
 
-        time.sleep(1) # Simulate time passing
-
-if __name__ == "__main__":
-    main()
+    print("\nGame over!")
 ```
