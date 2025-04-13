@@ -1,47 +1,33 @@
 ```markdown
-# Bloom Burst: A Floral Puzzle Game
+# Bloom Burst: Cultivate Your Floral Masterpiece
 
-![Bloom Burst Screenshot Placeholder 1](assets/placeholder_screenshot_1.png)  *(Replace with actual screenshot)*
+![Bloom Burst Gameplay Screenshot Placeholder](assets/gameplay_screenshot.png)
 
 ## Description
 
-Bloom Burst is a relaxing yet challenging puzzle game where players cultivate and arrange vibrant floral arrangements to fulfill specific orders. Drag and drop different flower types onto a grid, strategically rotating and placing them to maximize bloom potential and meet criteria like color combinations, flower sizes, and arrangement symmetry.
+Bloom Burst is a relaxing yet challenging puzzle game where you cultivate and arrange vibrant floral arrangements to fulfill specific orders.  Drag and drop different flower types onto a grid, strategically rotating and placing them to maximize bloom potential and meet criteria like color combinations, flower sizes, and arrangement symmetry. As you progress, you'll unlock new flower species, tools, and decorative elements to create increasingly complex and stunning floral masterpieces.
 
-As players progress, they unlock new flower species, tools, and decorative elements to create increasingly complex and stunning floral masterpieces. The game features a zen mode for relaxed play and a challenge mode with timed orders and scoring multipliers.
+The game features a zen mode for relaxed play and a challenge mode with timed orders and scoring multipliers.
 
 ## Features
 
-*   **Intuitive Drag-and-Drop Gameplay:** Easily arrange flowers on the grid with simple drag-and-drop controls.
-*   **Strategic Rotation:** Rotate flowers to maximize their bloom potential and fit them into the perfect spot.
-*   **Variety of Flower Types:** Unlock new flower species with unique characteristics and blooming patterns as you progress.
-*   **Dynamic Order Fulfillment:** Meet specific order criteria such as color combinations, flower sizes, and arrangement symmetry.
-*   **Zen Mode:** Relax and create beautiful floral arrangements without the pressure of time limits or scores.
-*   **Challenge Mode:** Test your skills with timed orders, scoring multipliers, and increasingly complex arrangements.
-*   **Unlockable Content:** Earn rewards and unlock new flower species, tools, and decorative elements.
-*   **Beautiful Visuals:** Enjoy vibrant colors and stunning floral artwork.
-*   **Relaxing Soundtrack:** Immerse yourself in a calming and serene atmosphere.
-
-![Bloom Burst Screenshot Placeholder 2](assets/placeholder_screenshot_2.png)  *(Replace with actual screenshot)*
-
-## Files in the Project
-
-*   `GAME_DESIGN.md`: Detailed document outlining the game's design, mechanics, and features.
-*   `README.md`: This file, providing information about the game, installation, and usage.
-*   `game.py`: The main Python file containing the game's source code.
-*   `requirements.txt`: A list of Python packages required to run the game.
-*   `assets/`: Directory containing game assets such as images, sounds, and other media.
-    *   `assets/README.md`: README file providing information about the assets used in the game.
+*   **Intuitive Drag-and-Drop Gameplay:** Easily place and rotate flowers on the grid.
+*   **Diverse Flower Selection:** Unlock and utilize a wide variety of flower species, each with unique properties and aesthetics.
+*   **Strategic Arrangement:** Maximize bloom potential by strategically placing flowers to meet specific criteria.
+*   **Challenging Puzzles:** Fulfill complex orders with requirements like color combinations, flower sizes, and arrangement symmetry.
+*   **Zen Mode:** Enjoy a relaxing, pressure-free experience with no timers or scoring.
+*   **Challenge Mode:** Test your skills with timed orders and scoring multipliers for competitive gameplay.
+*   **Progression System:** Unlock new flower species, tools, and decorative elements as you advance.
+*   **Visually Stunning:** Immerse yourself in a world of vibrant colors and beautiful floral designs.
 
 ## Installation
 
 1.  **Clone the repository:**
 
     ```bash
-    git clone [YOUR_REPOSITORY_URL]
-    cd bloom-burst
+    git clone <your_repository_url>
+    cd Bloom-Burst  # Or whatever your directory name is
     ```
-
-    *(Replace `[YOUR_REPOSITORY_URL]` with the actual URL of your Bloom Burst repository.)*
 
 2.  **Create a virtual environment (recommended):**
 
@@ -51,7 +37,7 @@ As players progress, they unlock new flower species, tools, and decorative eleme
     venv\Scripts\activate.bat  # On Windows
     ```
 
-3.  **Install the dependencies:**
+3.  **Install dependencies:**
 
     ```bash
     pip install -r requirements.txt
@@ -65,37 +51,49 @@ As players progress, they unlock new flower species, tools, and decorative eleme
     python game.py
     ```
 
-2.  **Playing the Game:**
+2.  **Game Interface:**
 
-    *   The game window will open, displaying the main menu.
-    *   Use the mouse to navigate the interface.
-    *   Select "Zen Mode" or "Challenge Mode" to begin playing.
-    *   Drag and drop flowers from the selection panel onto the grid.
-    *   Right-click a flower on the grid to rotate it.
-    *   Follow the order instructions to complete each arrangement.
-    *   Earn rewards and unlock new content as you progress!
+    ![Game Interface Screenshot Placeholder](assets/interface_screenshot.png)
 
-![Bloom Burst Screenshot Placeholder 3 - Example of Drag and Drop](assets/placeholder_screenshot_3.png)  *(Replace with actual screenshot showing Drag and Drop)*
+    *   **Grid:**  The main area where you place flowers.
+    *   **Flower Selection Panel:**  Choose from available flower types.  (Show available flowers, quantities if applicable)
+    *   **Rotation Controls:** Rotate the selected flower before placing it. (Show rotation buttons)
+    *   **Order Requirements:** View the current order's criteria (e.g., color combinations, flower counts). (Show an example of order requirements)
+    *   **Score/Timer:** Track your score and remaining time (in Challenge Mode).
+    *   **Power-up Buttons:** Use power-ups to aid your arrangement (if available). (Show an example of power-up buttons)
+    *   **Menu:** Access options like settings, zen/challenge mode switch, quit game.
 
-## Interface Examples
+3.  **How to Play:**
 
-**Main Menu:**
+    *   **Select a Flower:** Click on a flower in the Flower Selection Panel.
+    *   **Rotate the Flower (if needed):** Use the rotation controls to orient the flower correctly.
+    *   **Place the Flower:** Drag and drop the flower onto the grid.  Left-click to place.
+    *   **Fulfill the Order:** Arrange the flowers to meet all the requirements displayed.
+    *   **Submit the Order:** Once you believe the order is fulfilled, click the "Submit" button (if available).
+    *   **Progress:** Complete orders to advance to new levels, unlock new flowers, and earn rewards.
 
-The main menu provides access to the different game modes and settings.
+## Files in the Project
 
-![Main Menu Placeholder](assets/placeholder_main_menu.png) *(Replace with screenshot of the main menu)*
-
-**Game Screen:**
-
-The game screen displays the grid, flower selection panel, order instructions, and other relevant information.
-
-![Game Screen Placeholder](assets/placeholder_game_screen.png) *(Replace with screenshot of the game screen)*
+*   `GAME_DESIGN.md`:  Detailed documentation on the game's design, mechanics, and features.
+*   `README.md`:  This file!  Provides information about the game, installation, and usage.
+*   `game.py`:  The main script that runs the Bloom Burst game.
+*   `power_ups.py`:  Contains the logic and implementation of power-ups.
+*   `requirements.txt`:  A list of Python packages required to run the game.
+*   `assets/`:  Directory containing game assets such as images, sounds, and fonts.  See `assets/README.md` for more details.
+*   `levels/`:  Directory containing level definitions.
+    *   `levels/level_1.py`: Definition for level 1.
+    *   `levels/level_4.py`: Definition for level 4.
+    *   `levels/level_6.py`: Definition for level 6.
 
 ## Contributing
 
-We welcome contributions to Bloom Burst! If you have any ideas for new features, improvements, or bug fixes, please submit a pull request.  Before contributing, please review the `GAME_DESIGN.md` file to understand the overall game design and ensure your contributions align with the project's goals.
+We welcome contributions!  Please fork the repository and submit a pull request with your changes. Be sure to follow the coding style and guidelines outlined in `GAME_DESIGN.md`.
 
 ## License
 
-[Specify your project's license here, e.g., MIT License, Apache 2.0, etc.]
+[Specify your license here, e.g., MIT License]
+
+---
+
+**[Placeholder:  Add actual gameplay screenshots and interface screenshots to the `assets/` folder and update the paths in this README.]**
 ```
