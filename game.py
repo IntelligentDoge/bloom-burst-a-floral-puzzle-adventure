@@ -21,6 +21,14 @@ class Order:
                 return False
         return True
 
+    def describe(self):
+        if self.requirements:
+            description = "\n".join(f"- Must have {req}: {val}" for req, val in self.requirements.items())
+            return description
+        else:
+            return "- No specific requirements. Create a beautiful arrangement!"
+
+
 class GameBoard:
     def __init__(self, rows, cols):
         self.rows = rows
@@ -31,7 +39,7 @@ class GameBoard:
         """Places a flower on the board, handling errors."""
         self._validate_coordinates(row, col)
         if self.grid[row][col] is not None:
-            raise ValueError("That spot is already occupied by a {}".format(self.grid[row][col].name))
+            raise ValueError(f"That spot is already occupied by a {self.grid[row][col].name}")
         self.grid[row][col] = flower
 
     def remove_flower(self, row, col):
@@ -63,6 +71,7 @@ class GameBoard:
         if not (0 <= row < self.rows and 0 <= col < self.cols):
             raise ValueError("Invalid row or column index.")
 
+
 class BloomBurstGame:
     def __init__(self, rows=5, cols=5):
         self.board = GameBoard(rows, cols)
@@ -80,6 +89,8 @@ class BloomBurstGame:
         self.possible_sizes = set(flower.size for flower in self.available_flowers.values())
         self.attributes = {'color': self.possible_colors, 'size': self.possible_sizes}
         self.game_over = False
+        self.rows = rows
+        self.cols = cols
 
     def generate_order(self):
         """Generates a random order based on available flower attributes."""
@@ -110,8 +121,9 @@ class BloomBurstGame:
             elif choice == '3':
                 self.check_order_action()
             elif choice == '4':
-                print("Thanks for playing Bloom Burst!")
-                self.game_over = True
+                self.show_instructions()
+            elif choice == '5':
+                self.exit_game()
             else:
                 print("Invalid choice. Please try again.")
 
@@ -127,11 +139,7 @@ class BloomBurstGame:
     def display_game_state(self):
         """Displays the current game state to the player."""
         print("\n--- Current Order ---")
-        if self.current_order.requirements:
-            for req, val in self.current_order.requirements.items():
-                print(f"- Must have {req}: {val}")
-        else:
-            print("- No specific requirements. Create a beautiful arrangement!")
+        print(self.current_order.describe())
 
         print("\n--- Available Flowers ---")
         for i, flower in self.available_flowers.items():
@@ -139,6 +147,7 @@ class BloomBurstGame:
 
         print("\n--- Current Arrangement ---")
         self.board.display_board()
+        print(f"Score: {self.score}")
 
     def get_player_choice(self):
         """Gets the player's choice of action."""
@@ -146,40 +155,46 @@ class BloomBurstGame:
         print("1. Place Flower")
         print("2. Remove Flower")
         print("3. Check Order")
-        print("4. Exit")
+        print("4. Instructions")
+        print("5. Exit")
         return input("Enter your choice: ")
 
     def place_flower_action(self):
         """Handles the action of placing a flower on the board."""
-        try:
-            flower_index = int(input("Enter flower number to place: "))
-            if flower_index not in self.available_flowers:
-                raise ValueError("Invalid flower number.")
+        while True:
+            try:
+                flower_index = int(input("Enter flower number to place: "))
+                if flower_index not in self.available_flowers:
+                    print("Invalid flower number.")
+                    continue
 
-            row = int(input("Enter row (0-{}): ".format(self.board.rows - 1)))
-            col = int(input("Enter column (0-{}): ".format(self.board.cols - 1)))
+                row = int(input(f"Enter row (0-{self.rows - 1}): "))
+                col = int(input(f"Enter column (0-{self.cols - 1}): "))
 
-            flower = self.available_flowers[flower_index]
-            self.board.place_flower(flower, row, col)
-            print(f"Placed {flower.name} at ({row}, {col}).")
+                flower = self.available_flowers[flower_index]
+                self.board.place_flower(flower, row, col)
+                print(f"Placed {flower.name} at ({row}, {col}).")
+                break
 
-        except ValueError as e:
-            print(f"Error: Invalid input - {e}")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            except ValueError as e:
+                print(f"Error: Invalid input - {e}")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
 
     def remove_flower_action(self):
         """Handles the action of removing a flower from the board."""
-        try:
-            row = int(input("Enter row to remove flower from (0-{}): ".format(self.board.rows - 1)))
-            col = int(input("Enter column to remove flower from (0-{}): ".format(self.board.cols - 1)))
-            self.board.remove_flower(row, col)
-            print(f"Removed flower from ({row}, {col}).")
+        while True:
+            try:
+                row = int(input(f"Enter row to remove flower from (0-{self.rows - 1}): "))
+                col = int(input(f"Enter column to remove flower from (0-{self.cols - 1}): "))
+                self.board.remove_flower(row, col)
+                print(f"Removed flower from ({row}, {col}).")
+                break
 
-        except ValueError as e:
-            print(f"Error: Invalid input - {e}")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            except ValueError as e:
+                print(f"Error: Invalid input - {e}")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
 
     def check_order_action(self):
         """Handles the action of checking the order fulfillment."""
@@ -194,6 +209,23 @@ class BloomBurstGame:
             if not self.zen_mode:  # Added Zen Mode check
                 print("Game Over")
                 self.game_over = True
+
+    def show_instructions(self):
+        print("\n--- Instructions ---")
+        print("Bloom Burst is a game where you create flower arrangements to fulfill orders.")
+        print("Place flowers on the board according to the order requirements.")
+        print("Available actions:")
+        print("  1. Place Flower: Choose a flower and a location to place it on the board.")
+        print("  2. Remove Flower: Remove a flower from the board.")
+        print("  3. Check Order: Check if your arrangement fulfills the current order.")
+        print("  4. Exit: Quit the game.")
+        print("Fulfilling orders earns you points. The game ends if you fail an order in normal mode.")
+        print("In Zen mode, you can continue playing even if you fail an order.")
+
+    def exit_game(self):
+        print("Thanks for playing Bloom Burst!")
+        self.game_over = True
+
 
 if __name__ == "__main__":
     game = BloomBurstGame()
