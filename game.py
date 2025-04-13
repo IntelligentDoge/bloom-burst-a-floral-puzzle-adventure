@@ -31,12 +31,14 @@ class GameBoard:
         """Places a flower on the board, handling errors."""
         self._validate_coordinates(row, col)
         if self.grid[row][col] is not None:
-            raise ValueError("That spot is already occupied.")
+            raise ValueError("That spot is already occupied by a {}".format(self.grid[row][col].name))
         self.grid[row][col] = flower
 
     def remove_flower(self, row, col):
         """Removes a flower from the board, handling errors."""
         self._validate_coordinates(row, col)
+        if self.grid[row][col] is None:
+            raise ValueError("There is no flower at this spot.")
         self.grid[row][col] = None
 
     def get_arrangement(self):
@@ -64,19 +66,20 @@ class GameBoard:
 class BloomBurstGame:
     def __init__(self, rows=5, cols=5):
         self.board = GameBoard(rows, cols)
-        self.available_flowers = [
-            Flower("Rose", "red", "small"),
-            Flower("Tulip", "yellow", "medium"),
-            Flower("Daisy", "white", "small"),
-            Flower("Sunflower", "yellow", "large"),
-            Flower("Lavender", "purple", "small")
-        ]
+        self.available_flowers = {
+            1: Flower("Rose", "red", "small"),
+            2: Flower("Tulip", "yellow", "medium"),
+            3: Flower("Daisy", "white", "small"),
+            4: Flower("Sunflower", "yellow", "large"),
+            5: Flower("Lavender", "purple", "small")
+        }
         self.current_order = None
         self.score = 0
         self.zen_mode = False
-        self.possible_colors = set(flower.color for flower in self.available_flowers)
-        self.possible_sizes = set(flower.size for flower in self.available_flowers)
+        self.possible_colors = set(flower.color for flower in self.available_flowers.values())
+        self.possible_sizes = set(flower.size for flower in self.available_flowers.values())
         self.attributes = {'color': self.possible_colors, 'size': self.possible_sizes}
+        self.game_over = False
 
     def generate_order(self):
         """Generates a random order based on available flower attributes."""
@@ -95,7 +98,7 @@ class BloomBurstGame:
         self.zen_mode = self.get_zen_mode_preference()
         self.generate_order()
 
-        while True:
+        while not self.game_over:
             self.display_game_state()
 
             choice = self.get_player_choice()
@@ -108,7 +111,7 @@ class BloomBurstGame:
                 self.check_order_action()
             elif choice == '4':
                 print("Thanks for playing Bloom Burst!")
-                break
+                self.game_over = True
             else:
                 print("Invalid choice. Please try again.")
 
@@ -131,8 +134,8 @@ class BloomBurstGame:
             print("- No specific requirements. Create a beautiful arrangement!")
 
         print("\n--- Available Flowers ---")
-        for i, flower in enumerate(self.available_flowers):
-            print(f"{i + 1}. {flower}")
+        for i, flower in self.available_flowers.items():
+            print(f"{i}. {flower}")
 
         print("\n--- Current Arrangement ---")
         self.board.display_board()
@@ -149,19 +152,19 @@ class BloomBurstGame:
     def place_flower_action(self):
         """Handles the action of placing a flower on the board."""
         try:
-            flower_index = int(input("Enter flower number to place: ")) - 1
-            if not (0 <= flower_index < len(self.available_flowers)):
-                raise IndexError("Invalid flower index.")
+            flower_index = int(input("Enter flower number to place: "))
+            if flower_index not in self.available_flowers:
+                raise ValueError("Invalid flower number.")
 
             row = int(input("Enter row (0-{}): ".format(self.board.rows - 1)))
             col = int(input("Enter column (0-{}): ".format(self.board.cols - 1)))
 
             flower = self.available_flowers[flower_index]
             self.board.place_flower(flower, row, col)
+            print(f"Placed {flower.name} at ({row}, {col}).")
+
         except ValueError as e:
             print(f"Error: Invalid input - {e}")
-        except IndexError:
-            print("Error: Invalid flower index.")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
@@ -171,6 +174,8 @@ class BloomBurstGame:
             row = int(input("Enter row to remove flower from (0-{}): ".format(self.board.rows - 1)))
             col = int(input("Enter column to remove flower from (0-{}): ".format(self.board.cols - 1)))
             self.board.remove_flower(row, col)
+            print(f"Removed flower from ({row}, {col}).")
+
         except ValueError as e:
             print(f"Error: Invalid input - {e}")
         except Exception as e:
@@ -188,7 +193,7 @@ class BloomBurstGame:
             print("The arrangement does not meet the requirements.")
             if not self.zen_mode:  # Added Zen Mode check
                 print("Game Over")
-                return
+                self.game_over = True
 
 if __name__ == "__main__":
     game = BloomBurstGame()
