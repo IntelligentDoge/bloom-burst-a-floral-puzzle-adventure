@@ -1,54 +1,54 @@
 ```markdown
 # Bloom Burst: A Floral Puzzle Game
 
-![Bloom Burst Screenshot Placeholder 1](assets/screenshot1.png)
-*Example of gameplay. Replace with actual screenshot.*
+![Bloom Burst Screenshot Placeholder 1](assets/placeholder_screenshot_1.png)  *(Replace with actual screenshot)*
 
 ## Description
 
-Bloom Burst is a relaxing yet challenging puzzle game where you cultivate and arrange vibrant floral arrangements to fulfill specific orders. Drag and drop different flower types onto a grid, strategically rotating and placing them to maximize bloom potential and meet criteria like color combinations, flower sizes, and arrangement symmetry.
+Bloom Burst is a relaxing yet challenging puzzle game where players cultivate and arrange vibrant floral arrangements to fulfill specific orders. Drag and drop different flower types onto a grid, strategically rotating and placing them to maximize bloom potential and meet criteria like color combinations, flower sizes, and arrangement symmetry.
 
-As you progress, you unlock new flower species, tools, and decorative elements to create increasingly complex and stunning floral masterpieces.  The game features two distinct modes:
-
-*   **Zen Mode:** For a relaxed and contemplative experience, focus on creating beautiful arrangements without the pressure of time or scoring.
-*   **Challenge Mode:** Test your skills with timed orders and scoring multipliers, pushing your floral arrangement prowess to the limit!
+As players progress, they unlock new flower species, tools, and decorative elements to create increasingly complex and stunning floral masterpieces. The game features a zen mode for relaxed play and a challenge mode with timed orders and scoring multipliers.
 
 ## Features
 
-*   **Engaging Puzzle Gameplay:** Strategically place and rotate flowers to maximize bloom and fulfill order requirements.
-*   **Diverse Flower Collection:** Unlock a wide variety of flower species, each with unique shapes, colors, and bloom characteristics.
-*   **Unlockable Tools & Decorations:** Expand your creative options with special tools and decorative elements.
-*   **Two Game Modes:**
-    *   **Zen Mode:** Relaxing, untimed gameplay for creative expression.
-    *   **Challenge Mode:** Timed orders and scoring multipliers for a strategic and competitive experience.
-*   **Increasing Difficulty:** Progress through increasingly complex orders that demand skillful arrangement and planning.
-*   **Visually Appealing:** Beautiful flower graphics and a calming color palette.
+*   **Intuitive Drag-and-Drop Gameplay:** Easily arrange flowers on the grid with simple drag-and-drop controls.
+*   **Strategic Rotation:** Rotate flowers to maximize their bloom potential and fit them into the perfect spot.
+*   **Variety of Flower Types:** Unlock new flower species with unique characteristics and blooming patterns as you progress.
+*   **Dynamic Order Fulfillment:** Meet specific order criteria such as color combinations, flower sizes, and arrangement symmetry.
+*   **Zen Mode:** Relax and create beautiful floral arrangements without the pressure of time limits or scores.
+*   **Challenge Mode:** Test your skills with timed orders, scoring multipliers, and increasingly complex arrangements.
+*   **Unlockable Content:** Earn rewards and unlock new flower species, tools, and decorative elements.
+*   **Beautiful Visuals:** Enjoy vibrant colors and stunning floral artwork.
+*   **Relaxing Soundtrack:** Immerse yourself in a calming and serene atmosphere.
+
+![Bloom Burst Screenshot Placeholder 2](assets/placeholder_screenshot_2.png)  *(Replace with actual screenshot)*
 
 ## Files in the Project
 
-*   `GAME_DESIGN.md`:  Document detailing the game's design, mechanics, and intended user experience.
-*   `README.md`: This file, providing information about the game and how to run it.
-*   `game.py`: The main Python script containing the game's logic and implementation.
+*   `GAME_DESIGN.md`: Detailed document outlining the game's design, mechanics, and features.
+*   `README.md`: This file, providing information about the game, installation, and usage.
+*   `game.py`: The main Python file containing the game's source code.
 *   `requirements.txt`: A list of Python packages required to run the game.
-*   `assets/README.md`:  Document describing the contents of the `assets` directory. Contains image, audio, and other resource files used by the game.
+*   `assets/`: Directory containing game assets such as images, sounds, and other media.
+    *   `assets/README.md`: README file providing information about the assets used in the game.
 
 ## Installation
 
-To run Bloom Burst, you need to have Python 3 installed on your system.  Follow these steps to set up the game:
-
-1.  **Clone the repository (or download as a ZIP file and extract):**
+1.  **Clone the repository:**
 
     ```bash
-    git clone [Your Repository Link Here]  # Replace with the actual repository link
-    cd BloomBurst
+    git clone [YOUR_REPOSITORY_URL]
+    cd bloom-burst
     ```
+
+    *(Replace `[YOUR_REPOSITORY_URL]` with the actual URL of your Bloom Burst repository.)*
 
 2.  **Create a virtual environment (recommended):**
 
     ```bash
     python3 -m venv venv
     source venv/bin/activate  # On Linux/macOS
-    venv\Scripts\activate.bat # On Windows
+    venv\Scripts\activate.bat  # On Windows
     ```
 
 3.  **Install the dependencies:**
@@ -59,28 +59,43 @@ To run Bloom Burst, you need to have Python 3 installed on your system.  Follow 
 
 ## Usage
 
-Once you have installed the dependencies, you can run the game by executing the following command in your terminal:
+1.  **Run the game:**
 
-```bash
-python game.py
-```
+    ```bash
+    python game.py
+    ```
 
-![Bloom Burst Screenshot Placeholder 2](assets/screenshot2.png)
-*Example of the game's interface. Replace with actual screenshot.*
+2.  **Playing the Game:**
 
-**Game Controls:**
+    *   The game window will open, displaying the main menu.
+    *   Use the mouse to navigate the interface.
+    *   Select "Zen Mode" or "Challenge Mode" to begin playing.
+    *   Drag and drop flowers from the selection panel onto the grid.
+    *   Right-click a flower on the grid to rotate it.
+    *   Follow the order instructions to complete each arrangement.
+    *   Earn rewards and unlock new content as you progress!
 
-*   **Drag and Drop:** Use your mouse to drag and drop flowers onto the grid.
-*   **Rotate:**  Right-click on a flower to rotate it before placing it (or a designated key).
-*   **Undo:**  A button or key to undo your last move.  (Specify key in README)
-*   **Zen Mode:** Mouse clicks and drags to place and arrange flower, and click on UI elements to interact with the game.
-*   **Challenge Mode:** Timed, Mouse clicks and drags to place and arrange flower.
+![Bloom Burst Screenshot Placeholder 3 - Example of Drag and Drop](assets/placeholder_screenshot_3.png)  *(Replace with actual screenshot showing Drag and Drop)*
+
+## Interface Examples
+
+**Main Menu:**
+
+The main menu provides access to the different game modes and settings.
+
+![Main Menu Placeholder](assets/placeholder_main_menu.png) *(Replace with screenshot of the main menu)*
+
+**Game Screen:**
+
+The game screen displays the grid, flower selection panel, order instructions, and other relevant information.
+
+![Game Screen Placeholder](assets/placeholder_game_screen.png) *(Replace with screenshot of the game screen)*
 
 ## Contributing
 
-We welcome contributions to Bloom Burst! If you have any ideas for new features, bug fixes, or improvements, please feel free to submit a pull request.  See `GAME_DESIGN.md` to ensure compatibility with overall design of the game.
+We welcome contributions to Bloom Burst! If you have any ideas for new features, improvements, or bug fixes, please submit a pull request.  Before contributing, please review the `GAME_DESIGN.md` file to understand the overall game design and ensure your contributions align with the project's goals.
 
 ## License
 
-[Insert License information here, e.g., MIT License]
+[Specify your project's license here, e.g., MIT License, Apache 2.0, etc.]
 ```
